@@ -1,0 +1,2880 @@
+{
+	"info": {
+		"_postman_id": "b3c97a8c-99a3-4520-9de0-d8f6bc09e3db",
+		"name": "API-Employees- {Employee Status}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pre-requisite end points",
+			"item": [
+				{
+					"name": "GET /branches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84c786ad-c10e-4ed7-984a-9e61c75cfe6e",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Items in expected Response body should have  id and name of the branch",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"      ",
+									"        pm.response.to.have.jsonBody(\"items[0].name\");",
+									"        //Capture the branch_id value from the reponse",
+									"        postman.setGlobalVariable(\"branch_id\", jsonData.items[0].id);",
+									"    ",
+									"        ",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            throw new Error(\"No Note_types have been found\");",
+									"        }",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/branches",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"branches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /departments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84c786ad-c10e-4ed7-984a-9e61c75cfe6e",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Items in expected Response body should have  id, name of the department  and branch",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"      ",
+									"        pm.response.to.have.jsonBody(\"items[0].name\"&&\"items[0].branch\");",
+									"        //Capture the branch_id value from the reponse",
+									"        postman.setGlobalVariable(\"department_id\", jsonData.items[0].id);",
+									"    ",
+									"        ",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            throw new Error(\"No Note_types have been found\");",
+									"        }",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/departments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /note_types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6b64d59d-01ac-44cf-ac93-a357a3c0fc21",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type field and name of teh note_type",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\");",
+									"      ",
+									"        pm.response.to.have.jsonBody(\"items[0].name\");",
+									"        //Capture the note_type value from the reponse",
+									"        postman.setGlobalVariable(\"employee_note_type\", jsonData.items[0].note_type);",
+									"    ",
+									"        ",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            throw new Error(\"No Note_types have been found\");",
+									"        }",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/note_types",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"note_types"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Note Types",
+			"item": [
+				{
+					"name": "GET /note_types",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6b64d59d-01ac-44cf-ac93-a357a3c0fc21",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Capture the note_type value from the reponse",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type field and name of teh note_type",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\");",
+									"      ",
+									"        pm.response.to.have.jsonBody(\"items[0].name\");",
+									"        //Capture the note_type value from the reponse",
+									"        postman.setGlobalVariable(\"employee_note_type\", jsonData.items[0].note_type);",
+									"    ",
+									"        ",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            throw new Error(\"No Note_types have been found\");",
+									"        }",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/note_types",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"note_types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /note_types with invalid Authorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2994d8f-a46e-4f53-b9c8-01177824eb01",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"Response returns authorization required message\", function() {",
+									"    pm.response.to.have.jsonBody(\"message\" & \"code\");",
+									"    pm.response.to.not.have.jsonBody(\"Please verify your access level for this url.\");",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "fduyktrfhjdfkdyjtfgdjhgksydjtfg",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/note_types",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"note_types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /note_types with Substring as filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d86fae12-0cf6-4e71-8774-f7b136c217f5",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" && \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type field and name of teh note_type",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\");",
+									"        pm.response.to.have.jsonBody(\"items[0].name\");",
+									"    } else {",
+									"        if (jsonData.items.length !== 0) {",
+									"            throw new Error(\"No Note_types have been found\");",
+									"        }",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/note_types?filter=termi",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"note_types"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "termi"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /note_types with invalid Substring as filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3fa825a-0f71-4c03-9aae-faef5e32e543",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" && \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type field and name of the note_type",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\");",
+									"        pm.response.to.have.jsonBody(\"items[0].name\");",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            var mystr='No note_types have been found'",
+									"            console.log(\"No Note_types have been found\");",
+									"        }",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/note_types?filter=4563747ryjytr74ueryuye6t",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"note_types"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "4563747ryjytr74ueryuye6t"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "GET /employees",
+					"item": [
+						{
+							"name": "GET /employees",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"// Capture an employee with id and external id",
+											"pm.test(\"Get an employee from the response and save employee id values\", function () {",
+											"    ",
+											"    var jsonData = JSON.parse(responseBody);",
+											"    var itemNode = 0;",
+											"    for (idx=0;idx<jsonData.items.length;idx++) {",
+											"        if (jsonData.items[idx].status == 'active'&jsonData.items[idx].external_id !==null&jsonData.items[idx].id !== 100) {",
+											"            postman.setGlobalVariable(\"alayacare_employee_id\", jsonData.items[idx].id);",
+											"            postman.setGlobalVariable(\"external_employee_id\", jsonData.items[idx].external_id);",
+											"            itemNode = idx;",
+											"            break;",
+											"        }",
+											"    }",
+											"    ",
+											"});",
+											"    ",
+											"",
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Expected Response body should return employee id and name",
+											"",
+											"pm.test(\"Response has returned employee id, profile_id and name \", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"        pm.response.to.have.jsonBody(\"items[0].id\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\");",
+											"    } else {",
+											"        if (jsonData.items.length !== 0) {",
+											"            throw new Error(\"No employees have been found\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Terminated\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var terminated_status = 'terminated_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (terminated_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{terminated_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{terminated_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Active\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var active_status = 'active_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (active_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{active_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{active_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Pending\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var pending_status = 'pending_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (pending_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{pending_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{pending_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Suspended\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var suspended_status = 'suspended_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (suspended_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{suspended_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{suspended_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Applicant\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var applicant_status = 'applicant_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (applicant_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{applicant_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{applicant_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Rejected\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var rejected_status = 'rejected_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (rejected_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{rejected_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{rejected_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Hold\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var on_hold_status = 'on_hold_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (on_hold_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{on_hold_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{on_hold_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using status filter \"Hold\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var unknown_status = 'unknown_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (unknown_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?status={{unknown_status}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "{{unknown_status}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees using branch as filter (Complete the tests)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Response includes Count, items",
+											"",
+											"pm.test(\"response should be contain attributes items and count\", function() {",
+											"    pm.response.to.not.be.error;",
+											"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+											"    pm.response.to.not.have.jsonBody(\"error\");",
+											"});",
+											"",
+											"//Employee returned should match the status on the filter",
+											"",
+											"pm.test(\"Response has returned an employee and the status of employee matches filter\", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+											"       var unknown_status = 'unknown_status';",
+											"        pm.response.to.have.jsonBody(\"items[0].id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].first_name\"&&\"items[0].profile_id\");",
+											"        pm.response.to.have.jsonBody(\"items[0].status\" === (unknown_status));",
+											"",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employees have been found or the status does not match\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees?branch=1030",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "branch",
+											"value": "1030"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET /employees/{alayacare_employee_id}",
+					"item": [
+						{
+							"name": "GET /employees/{alayacare_employee_id}",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Expected Response body should return employee id and name",
+											"",
+											"pm.test(\"Response has returned employee id, profile_id and name and employee status \", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.status(200)) {",
+											"        pm.response.to.have.jsonBody(\"id\"&&\"profile_id\");",
+											"        pm.response.to.have.jsonBody(\"demographics.first_name\"&&\"status\");",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length !== 0) {",
+											"            throw new Error(\"No employee have been found\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees/{{alayacare_employee_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees",
+										"{{alayacare_employee_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees/{alayacare_employee_id} to check termination_date field",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Expected Response body should return employee id and name",
+											"",
+											"pm.test(\"Response has returned employee id, profile_id and name and employee status \", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.status(200)) {",
+											"        pm.response.to.have.jsonBody(\"id\"&&\"profile_id\");",
+											"        pm.response.to.have.jsonBody(\"demographics.first_name\"&&\"status\");",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length !== 0) {",
+											"            throw new Error(\"No employee have been found\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees/{{alayacare_employee_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees",
+										"{{alayacare_employee_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET /employees/by_id/{external_employee_id}",
+					"item": [
+						{
+							"name": "GET /employees/{external_employee_id}",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Expected Response body should return employee id and name",
+											"",
+											"pm.test(\"Response has returned employee id, profile_id and name, employee staus \", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.status(200)) {",
+											"        pm.response.to.have.jsonBody(\"id\"&&\"profile_id\");",
+											"        pm.response.to.have.jsonBody(\"demographics.first_name\"&&\"status\");",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employee have been found\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees/by_id/{{external_employee_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees",
+										"by_id",
+										"{{external_employee_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET /employees/{external_employee_id} with termination_date feild",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"//Expected Response body should return employee id and name",
+											"",
+											"pm.test(\"Response has returned employee id, profile_id and name, employee staus \", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.status(200)) {",
+											"        pm.response.to.have.jsonBody(\"id\"&&\"profile_id\");",
+											"        pm.response.to.have.jsonBody(\"demographics.first_name\"&&\"status\");",
+											"        ",
+											"    } else {",
+											"        if (jsonData.items.length === 0) {",
+											"            throw new Error(\"No employee have been found\");",
+											"        }",
+											"    }",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees/by_id/{{external_employee_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees",
+										"by_id",
+										"{{external_employee_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "POST /employees",
+					"item": [
+						{
+							"name": "POST /employee",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "bcac2d5a-fef3-43f9-b350-fe15f983872a",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "bb36eef9-21da-415b-acbb-b2f8c0024d8d",
+										"exec": [
+											"//Status code expected '200'",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"",
+											"//Response returns the employee created with id, firs name and profile id and external id",
+											"",
+											"pm.test(\"Response has returned employee id, profile_id and name \", function() {",
+											"    var jsonData = JSON.parse(responseBody);",
+											"   if (pm.response.to.have.status(201)) {",
+											"        pm.response.to.have.jsonBody(\"id\"&&\"external_id\");",
+											"       ",
+											"        ",
+											"    } else {",
+											"       console.log(\"Employee can not be created.\")",
+											"    }",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{api_keys_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{api_keys_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"demographics\": {\n    \"first_name\": \"{{$randomFirstName}}\",\n    \"last_name\": \"{{$randomLastName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"salutation\": \"Mr.\",\n    \"address\": \"{{$randomStreetAddress}}\",\n    \"city\": \"{{$randomCity}}\",\n    \"country\": \"{{$randomCountry}}\"\n   \n  },\n  \"external_id\": \"{{$randomWord}}\",\n  \"username\": \"{{$randomUserName}}\",\n  \n  \"payroll_number\": \"{{$randomUUID}}\",\n  \"max_weekly_capacity\": \"24.5\",\n  \n  \"timezone\": \"America/Toronto\",\n  \n \n  \"status\": \"{{pending_status}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/{{employees}}/employees",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"{{employees}}",
+										"employees"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Employee Notes",
+			"item": [
+				{
+					"name": "GET /employees",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d05e1241-9919-4045-bd30-027046eb12f6",
+								"exec": [
+									"// Capture an employee with id and external id",
+									"pm.test(\"Get an employee from the response and save employee id values\", function () {",
+									"    ",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    var itemNode = 0;",
+									"    for (idx=0;idx<jsonData.items.length;idx++) {",
+									"        if (jsonData.items[idx].status == 'active'&jsonData.items[idx].external_id !==null&jsonData.items[idx].id !== 100) {",
+									"            postman.setGlobalVariable(\"alayacare_employee_id\", jsonData.items[idx].id);",
+									"            postman.setGlobalVariable(\"external_employee_id\", jsonData.items[idx].external_id);",
+									"            itemNode = idx;",
+									"            break;",
+									"        }",
+									"    }",
+									"    ",
+									"});",
+									"    ",
+									"",
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type field and name of teh note_type",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"        pm.response.to.have.jsonBody(\"items[0].first_name\");",
+									"    } else {",
+									"        if (jsonData.items.length !== 0) {",
+									"            throw new Error(\"No employees have been found\");",
+									"        }",
+									"    }",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employees",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /employee_notes/{alaycare_employee_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type, content and id of the employee notes.",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\"&&\"items[0].content\");",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            console.log(\"No employee notes have been found\");",
+									"        }",
+									"    }",
+									"})",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/{{alayacare_employee_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"{{alayacare_employee_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /employee_notes/{alaycare_employee_id} with invalid status feild",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be error message\", function() {",
+									"",
+									"    pm.response.to.have.jsonBody(\"message\");",
+									"   pm.test(\"Response body has error message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Not a valid choice.\");",
+									"});",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"ac\",\n  \"note_type\": \"{{employee_note_type}}\",\n  \"content\": \" <em>Sending content without any tags</em>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/{{alayacare_employee_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"{{alayacare_employee_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /employee_notes/{employee_id} with invalid status feild",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be error message\", function() {",
+									"",
+									"    pm.response.to.have.jsonBody(\"message\");",
+									"  ",
+									"pm.test(\"Response body has error message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Not a valid choice.\");",
+									"});",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"ac\",\n  \"note_type\": \"{{employee_note_type}}\",\n  \"content\": \" <em>Sending content without any tags</em>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/by_id/{{external_employee_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"by_id",
+								"{{external_employee_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /employee_notes/{employee_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes content, id, note_type\", function() {",
+									"    var employee_note_type = employee_note_type;",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"content\" && \"id\" &&\"note_type\");",
+									"    pm.response.to.have.jsonBody(\"note-type\" === employee_note_type);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"active\",\n  \"note_type\": \"{{$randomAlphaNumeric}}\",\n  \"content\": \"<h4> Reponsive </h4>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/by_id/{{external_employee_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"by_id",
+								"{{external_employee_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /employee_notes/{employee_id} with invalid employee id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '404'",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"//Response returns employee not found error",
+									"pm.test(\"response should be error message\", function() {",
+									"",
+									"    pm.response.to.have.jsonBody(\"message\");",
+									"  ",
+									"pm.test(\"Response body has error message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Employee not found\");",
+									"});",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"active\",\n  \"note_type\": \"dhguyejshfvjdg8476587tueyu\",\n  \"content\": \"<h4> Reponsive </h4>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/by_id/{{$randomAlphaNumeric}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"by_id",
+								"{{$randomAlphaNumeric}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /employee_notes/{alayacare_employee_id} with invalid employee id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '404'",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"//Response returns employee not found error",
+									"pm.test(\"response should be error message\", function() {",
+									"",
+									"    pm.response.to.have.jsonBody(\"message\");",
+									"  ",
+									"pm.test(\"Response body has error message\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Employee not found\");",
+									"});",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"active\",\n  \"note_type\": \"dhguyejshfvjdg8476587tueyu\",\n  \"content\": \"<h4> Reponsive </h4>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/{{$randomInt}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"{{$randomInt}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST /employee_notes/{alayacare_employee_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes content, id, note_type\", function() {",
+									"    var employee_note_type = employee_note_type;",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"content\" && \"id\" &&\"note_type\");",
+									"    pm.response.to.have.jsonBody(\"note-type\" === employee_note_type);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"active\",\n  \"note_type\": \"{{employee_note_type}}\",\n  \"content\": \"<h4> Reponsive </h4>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/{{alayacare_employee_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"{{alayacare_employee_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /employee_notes/{external_employee_id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type, content and id of the employee notes",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\"&&\"items[0].content\");",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            console.log(\"No Note_types have been found\");",
+									"        }",
+									"    }",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/by_id/{{external_employee_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"by_id",
+								"{{external_employee_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /employee_notes/{alaycare_employee_id} with filter \"created_at\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type, content and id of the employee notes.",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    //var created_at = JSON.parse(responseBody(\"items[0].created\"))",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"       var created_at = created_at;",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\"&&\"items[0].content\");",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"        pm.expect(\"items[0].created_at\" &&jsonData.created_at >= created_at);",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            console.log(\"No employee notes have been found\");",
+									"        }",
+									"    }",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/{{alayacare_employee_id}}?created_at={{created_at}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"{{alayacare_employee_id}}"
+							],
+							"query": [
+								{
+									"key": "created_at",
+									"value": "{{created_at}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /employee_notes/{alaycare_employee_id} with filter \"note_type\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type, content and id of the employee notes.",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"       var employee_note_type = employee_note_type;",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\"&&\"items[0].content\");",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"        pm.response.to.have.jsonBody('items[0].note_type'=== employee_note_type)",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            console.log(\"No employee notes have been found\");",
+									"        }",
+									"    }",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/{{alayacare_employee_id}}?note_type={{employee_note_type}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"{{alayacare_employee_id}}"
+							],
+							"query": [
+								{
+									"key": "note_type",
+									"value": "{{employee_note_type}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /employee_notes/by_id/{employee_id} with filter \"created_at\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type, content and id of the employee notes.",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"       var created_at = created_at;",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\"&&\"items[0].content\");",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"        pm.response.to.have.jsonBody(\"items[0].created_at\" &&jsonData.created_at >= created_at);",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            console.log(\"No employee notes have been found\");",
+									"        }",
+									"    }",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/by_id/{{external_employee_id}}?created_at={{created_at}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"by_id",
+								"{{external_employee_id}}"
+							],
+							"query": [
+								{
+									"key": "created_at",
+									"value": "{{created_at}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /employee_notes/by_id/{employee_id} with filter \"note_type\"",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34f81f24-e1d4-4ff1-92cd-fc61252bb446",
+								"exec": [
+									"//Status code expected '200'",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"//Response includes Count, items",
+									"",
+									"pm.test(\"response should be contain attributes items and count\", function() {",
+									"    pm.response.to.not.be.error;",
+									"    pm.response.to.have.jsonBody(\"items\" & \"count\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});",
+									"",
+									"//Expected Response body should have note_type, content and id of the employee notes.",
+									"",
+									"pm.test(\"Response has note_type and name of the note_type\", function() {",
+									"    var jsonData = JSON.parse(responseBody);",
+									"   if (pm.response.to.have.jsonBody(\"count\") && jsonData.count !== 0) {",
+									"       var employee_note_type = employee_note_type;",
+									"        pm.response.to.have.jsonBody(\"items[0].note_type\"&&\"items[0].content\");",
+									"        pm.response.to.have.jsonBody(\"items[0].id\");",
+									"        pm.response.to.have.jsonBody('items[0].note_type'=== employee_note_type)",
+									"    } else {",
+									"        if (jsonData.items.length === 0) {",
+									"            console.log(\"No employee notes have been found\");",
+									"        }",
+									"    }",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4cdb2663-3daf-4b8f-8631-838eba379c52",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{api_keys_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{api_keys_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{employees}}/employee_notes/by_id/{{external_employee_id}}?note_type={{employee_note_type}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{employees}}",
+								"employee_notes",
+								"by_id",
+								"{{external_employee_id}}"
+							],
+							"query": [
+								{
+									"key": "note_type",
+									"value": "{{employee_note_type}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
