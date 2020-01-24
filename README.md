@@ -1,10 +1,10 @@
-#Getting Started
+<b>Getting Started</b>
 
 Newman is a command line Collection Runner for Postman. It allows you to run and test a Postman Collection directly from the command line. It is built with extensibility in mind so that you can easily integrate it with your continuous integration servers and build systems.
 
 Newman maintains feature parity with Postman and allows you to run collections the way they are executed inside the collection runner in the Postman app.
 
-#Installation and set up
+<b>Installation and set up</b>
 
 Newman is built on Node.js. To run Newman, make sure you have Node.js installed.
 
@@ -19,7 +19,7 @@ Or navigate to the directory space where you want the newman to run.
 ```$ npm install  newman```
 
 
-#Running the Collection form CLI
+<b>Running the Collection form CLI</b>
 
 1. Clone the repo from github to your local
 
